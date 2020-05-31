@@ -270,6 +270,13 @@ tags
 
 django_saas_boilerplate/media/
 
+# Gulp Generated js & css files
+django_saas_boilerplate/static/css/project.css
+django_saas_boilerplate/static/css/project.min.css
+django_saas_boilerplate/static/js/project.min.js
+django_saas_boilerplate/static/js/vendors.js
+django_saas_boilerplate/static/js/vendors.min.js
+
 .pytest_cache/
 
 

@@ -2,7 +2,11 @@
 @import "custom_bootstrap_vars";
 @import "bootstrap";
 
+@tailwind base;
 
+@tailwind components;
+
+@tailwind utilities;
 
 
 // project specific CSS goes here

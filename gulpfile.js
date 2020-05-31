@@ -12,7 +12,7 @@ const browserSync = require('browser-sync').create()
 
 const concat = require('gulp-concat')
 
-const cssnano = require ('cssnano')
+const cssnano = require('cssnano')
 const imagemin = require('gulp-imagemin')
 const pixrem = require('pixrem')
 const plumber = require('gulp-plumber')
@@ -23,20 +23,22 @@ const sass = require('gulp-sass')
 const spawn = require('child_process').spawn
 const uglify = require('gulp-uglify-es').default
 
+const tailwindcss = require('tailwindcss');
+
 // Relative paths function
 function pathsConfig(appName) {
   this.app = `./${pjson.name}`
   const vendorsRoot = 'node_modules'
 
   return {
-    
+
     bootstrapSass: `${vendorsRoot}/bootstrap/scss`,
     vendorsJs: [
       `${vendorsRoot}/jquery/dist/jquery.slim.js`,
       `${vendorsRoot}/popper.js/dist/umd/popper.js`,
       `${vendorsRoot}/bootstrap/dist/js/bootstrap.js`,
     ],
-    
+
     app: this.app,
     templates: `${this.app}/templates`,
     css: `${this.app}/static/css`,
@@ -44,6 +46,7 @@ function pathsConfig(appName) {
     fonts: `${this.app}/static/fonts`,
     images: `${this.app}/static/images`,
     js: `${this.app}/static/js`,
+    tailwindcss_config: `${this.app}/static/js/tailwind.config.js`,
   }
 }
 
@@ -56,20 +59,22 @@ var paths = pathsConfig()
 // Styles autoprefixing and minification
 function styles() {
   var processCss = [
-      autoprefixer(), // adds vendor prefixes
-      pixrem(),       // add fallbacks for rem units
+    tailwindcss(paths.tailwindcss_config), // tailwind css
+    autoprefixer(), // adds vendor prefixes
+    pixrem(),       // add fallbacks for rem units
+    // TODO: purge tailwind css classes
   ]
 
   var minifyCss = [
-      cssnano({ preset: 'default' })   // minify result
+    cssnano({ preset: 'default' })   // minify result
   ]
 
   return src(`${paths.sass}/project.scss`)
     .pipe(sass({
       includePaths: [
-        
+
         paths.bootstrapSass,
-        
+
         paths.sass
       ]
     }).on('error', sass.logError))
@@ -113,37 +118,37 @@ function imgCompression() {
 // Run django server
 function asyncRunServer() {
   var cmd = spawn('gunicorn', [
-      'config.asgi', '-k', 'uvicorn.workers.UvicornWorker', '--reload'
-      ], {stdio: 'inherit'}
+    'config.asgi', '-k', 'uvicorn.workers.UvicornWorker', '--reload'
+  ], { stdio: 'inherit' }
   )
-  cmd.on('close', function(code) {
+  cmd.on('close', function (code) {
     console.log('gunicorn exited with code ' + code)
   })
 }
 
 // Browser sync server for live reload
 function initBrowserSync() {
-    browserSync.init(
-      [
-        `${paths.css}/*.css`,
-        `${paths.js}/*.js`,
-        `${paths.templates}/*.html`
-      ], {
-        // https://www.browsersync.io/docs/options/#option-proxy
-        proxy:  {
-          target: 'django:8000',
-          proxyReq: [
-            function(proxyReq, req) {
-              // Assign proxy "host" header same as current request at Browsersync server
-              proxyReq.setHeader('Host', req.headers.host)
-            }
-          ]
-        },
-        // https://www.browsersync.io/docs/options/#option-open
-        // Disable as it doesn't work from inside a container
-        open: false
-      }
-    )
+  browserSync.init(
+    [
+      `${paths.css}/*.css`,
+      `${paths.js}/*.js`,
+      `${paths.templates}/*.html`
+    ], {
+    // https://www.browsersync.io/docs/options/#option-proxy
+    proxy: {
+      target: 'django:8000',
+      proxyReq: [
+        function (proxyReq, req) {
+          // Assign proxy "host" header same as current request at Browsersync server
+          proxyReq.setHeader('Host', req.headers.host)
+        }
+      ]
+    },
+    // https://www.browsersync.io/docs/options/#option-open
+    // Disable as it doesn't work from inside a container
+    open: false
+  }
+  )
 }
 
 // Watch

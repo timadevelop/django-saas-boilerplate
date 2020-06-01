@@ -1,0 +1,78 @@
+{% load i18n %}
+
+{% comment %}
+<nav class="navbar navbar-expand-md navbar-light bg-light">
+  <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <a class="navbar-brand" href="{% url 'home' %}">Django SaaS Boilerplate</a>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="{% url 'home' %}">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'about' %}">About</a>
+      </li>
+      {% if request.user.is_authenticated %}
+        <li class="nav-item">
+          {# URL provided by django-allauth/account/urls.py #}
+          <a class="nav-link" href="{% url 'users:detail' request.user.username  %}">{% trans "My Profile" %}</a>
+        </li>
+        <li class="nav-item">
+          {# URL provided by django-allauth/account/urls.py #}
+          <a class="nav-link" href="{% url 'account_logout' %}">{% trans "Sign Out" %}</a>
+        </li>
+      {% else %}
+        <li class="nav-item">
+          {# URL provided by django-allauth/account/urls.py #}
+          <a id="sign-up-link" class="nav-link" href="{% url 'account_signup' %}">{% trans "Sign Up" %}</a>
+        </li>
+        <li class="nav-item">
+          {# URL provided by django-allauth/account/urls.py #}
+          <a id="log-in-link" class="nav-link" href="{% url 'account_login' %}">{% trans "Sign In" %}</a>
+        </li>
+      {% endif %}
+    </ul>
+  </div>
+</nav>
+{% endcomment %}
+
+<nav class="flex items-center justify-between flex-wrap bg-teal-500 p-6">
+  <a href="{% url 'home' %}" class="flex items-center flex-shrink-0 text-white mr-6">
+    <svg class="fill-current h-8 w-8 mr-2" width="54" height="54" viewBox="0 0 54 54" xmlns="http://www.w3.org/2000/svg"><path d="M13.5 22.1c1.8-7.2 6.3-10.8 13.5-10.8 10.8 0 12.15 8.1 17.55 9.45 3.6.9 6.75-.45 9.45-4.05-1.8 7.2-6.3 10.8-13.5 10.8-10.8 0-12.15-8.1-17.55-9.45-3.6-.9-6.75.45-9.45 4.05zM0 38.3c1.8-7.2 6.3-10.8 13.5-10.8 10.8 0 12.15 8.1 17.55 9.45 3.6.9 6.75-.45 9.45-4.05-1.8 7.2-6.3 10.8-13.5 10.8-10.8 0-12.15-8.1-17.55-9.45-3.6-.9-6.75.45-9.45 4.05z"/></svg>
+    <span class="font-semibold text-xl tracking-tight">Django SaaS Boilerplate</span>
+  </a>
+  <div class="block lg:hidden">
+    <button class="flex items-center px-3 py-2 border rounded text-teal-200 border-teal-400 hover:text-white hover:border-white">
+      <svg class="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Menu</title><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/></svg>
+    </button>
+  </div>
+  <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
+    <div class="text-sm lg:flex-grow">
+      <a href="{% url 'home' %}" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
+        Home
+      </a>
+      <a href="{% url 'about' %}" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
+        About
+      </a>
+    </div>
+    <div>
+      {% if request.user.is_authenticated %}
+      {# URL provided by django-allauth/account/urls.py #}
+      <a  href="{% url 'users:detail' request.user.username  %}" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white">
+        {% trans "My Profile" %}
+      </a>
+      {# URL provided by django-allauth/account/urls.py #}
+      <a href="{% url 'account_logout' %}" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white">{% trans "Sign Out" %}</a>
+
+      {% else %}
+        {# URL provided by django-allauth/account/urls.py #}
+        <a id="sign-up-link" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white" href="{% url 'account_signup' %}">{% trans "Sign Up" %}</a>
+        {# URL provided by django-allauth/account/urls.py #}
+        <a id="log-in-link" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white" href="{% url 'account_login' %}">{% trans "Sign In" %}</a>
+    {% endif %}
+    </div>
+  </div>
+</nav>

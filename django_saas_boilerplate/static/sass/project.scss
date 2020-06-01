@@ -1,6 +1,5 @@
-
 @import "custom_bootstrap_vars";
-@import "bootstrap";
+// @import "bootstrap";
 
 @tailwind base;
 
@@ -8,11 +7,10 @@
 
 @tailwind utilities;
 
-
 // project specific CSS goes here
 
 ////////////////////////////////
-		//Variables//
+//Variables//
 ////////////////////////////////
 
 // Alert colors
@@ -25,7 +23,7 @@ $dark-pink: #eed3d7;
 $red: #b94a48;
 
 ////////////////////////////////
-		//Alerts//
+//Alerts//
 ////////////////////////////////
 
 // bootstrap alert CSS, translated to the django-standard levels of
@@ -41,4 +39,51 @@ $red: #b94a48;
   background-color: $pink;
   border-color: $dark-pink;
   color: $red;
+}
+
+.form {
+  label {
+    display: inline-block;
+    // margin-bottom: 0;
+    & + input[type="checkbox"] {
+      margin: 0.3em;
+      float: left;
+    }
+  }
+}
+
+.custom-form {
+  @apply bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4;
+
+  button, input[type=submit] {
+    @apply bg-blue-500 text-white font-bold py-2 px-4 rounded;
+    &:hover {
+      @apply bg-blue-700;
+    }
+    &:focus {
+      @apply outline-none;
+      @apply shadow-outline;
+    }
+  }
+  &.sign-in {
+    .forgot-password {
+      @apply inline-block align-baseline font-bold text-sm text-blue-500;
+      &:hover {
+        @apply text-blue-800;
+      }
+    }
+  }
+}
+
+
+.alert {
+  @apply flex items-center mb-4 bg-blue-500 text-white text-sm font-bold px-4 py-3;
+  .icon {
+    @apply fill-current w-4 h-4 mr-2;
+  }
+}
+
+
+.form-center-wrapper {
+  @apply w-full max-w-sm m-auto;
 }
